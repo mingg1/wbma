@@ -9,7 +9,7 @@ const App = () => {
     // SafeAreaView: only for IOS, but there's a hack for Android
     <SafeAreaView style={GlobalStyles.container}>
       <List />
-      <StatusBar style="auto" />
+      <StatusBar style="light" barStyle="light-content" />
     </SafeAreaView>
   );
 };

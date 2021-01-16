@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, View, Image, StyleSheet, Text} from 'react-native';
 import ListItem from './ListItem';
 
 const mediaArray = [
@@ -37,11 +37,44 @@ const mediaArray = [
 
 const List = () => {
   return (
-    <FlatList
-      data={mediaArray}
-      renderItem={({item}) => <ListItem singleMedia={item} />}
-    />
+    <View style={styles.container}>
+      <View style={styles.textBox}>
+        <Text style={styles.title}>3 cats around you</Text>
+      </View>
+      <Image
+        style={styles.mainImg}
+        source={{
+          uri:
+            'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1327&q=80',
+        }}
+      />
+      <FlatList
+        data={mediaArray}
+        renderItem={({item}) => <ListItem singleMedia={item} />}
+      />
+    </View>
   );
 };
-
+const styles = StyleSheet.create({
+  container: {
+    overflow: 'scroll',
+  },
+  textBox: {
+    opacity: 0.8,
+    position: 'absolute',
+    zIndex: 1,
+    top: '26%',
+    alignSelf: 'center',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    padding: 20,
+    backgroundColor: '#D6E4E5',
+  },
+  mainImg: {
+    height: '34%',
+    marginBottom: 0,
+  },
+});
 export default List;
