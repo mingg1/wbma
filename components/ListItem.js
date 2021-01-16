@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Platform,
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 const ListItem = (props) => {
@@ -56,6 +63,20 @@ const styles = StyleSheet.create({
     borderWidth: 1.3,
     borderColor: '#0f9200',
     backgroundColor: '#eee',
+    ...Platform.select({
+      ios: {
+        shadowColor: 'rgb(50, 50, 50)',
+        shadowOpacity: 0.5,
+        shadowRadius: 8,
+        shadowOffset: {
+          height: 2,
+          width: 2,
+        },
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
   textBox: {
     flex: 2,
