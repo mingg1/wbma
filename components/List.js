@@ -11,7 +11,7 @@ const List = () => {
     try {
       const listResponse = await fetch(baseUrl + 'media?limit=' + limit);
       const listJson = await listResponse.json();
-      const media = Promise.all(
+      const media = await Promise.all(
         listJson.map(async (item) => {
           const fileResponse = await fetch(baseUrl + 'media/' + item.file_id);
           const fileJson = fileResponse.json();
