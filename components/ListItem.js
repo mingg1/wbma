@@ -26,11 +26,11 @@ ListItem.propTypes = {
 const styles = StyleSheet.create({
   image: {
     flex: 1,
+    height: 100,
     borderRadius: 16,
   },
   imageBox: {
-    flex: 2,
-    height: '100%',
+    flex: 1,
   },
   listTitle: {
     fontWeight: 'bold',
