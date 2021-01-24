@@ -1,24 +1,38 @@
 import React, {useContext, useEffect} from 'react';
-import {StyleSheet, View, Text, Button} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  Platform,
+  KeyboardAvoidingView,
+  Keyboard,
+  View,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useLogin} from '../hooks/ApiHooks';
+import LoginForm from '../components/LoginForm';
+import RegisterForm from '../components/RegisterForm';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 const Login = ({navigation}) => {
-  const [isLoggedIn, setIsLoggedIn] = useContext(MainContext);
-  console.log(isLoggedIn);
-  const logIn = async () => {
-    setIsLoggedIn(true);
-    await AsyncStorage.setItem('userToken', 'abc');
-    navigation.navigate('Home');
-  };
+  const {isLoggedIn, setIsLoggedIn, setUser} = useContext(MainContext);
+  console.log('isLoggedIn?', isLoggedIn);
+  const {checkToken} = useLogin();
 
   const getToken = async () => {
     const userToken = await AsyncStorage.getItem('userToken');
     console.log('token', userToken);
-    if (userToken === 'abc') {
-      setIsLoggedIn(true);
-      navigation.navigate('Home');
+    if (userToken) {
+      try {
+        const userData = await checkToken(userToken);
+        setIsLoggedIn(true);
+        setUser(userData);
+        navigation.navigate('Home');
+      } catch (err) {
+        console.log('token check failed', err.message);
+      }
     }
   };
   useEffect(() => {
@@ -26,10 +40,23 @@ const Login = ({navigation}) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Login</Text>
-      <Button title="Sign in!" onPress={logIn} />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboard}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.login}>
+            <Text>Login</Text>
+            <LoginForm navigation={navigation} />
+          </View>
+          <View style={styles.register}>
+            <Text>Register</Text>
+            <RegisterForm navigation={navigation} />
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
