@@ -1,21 +1,25 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
+import {uploadsUrl} from '../utils/variables';
 
-const uploadsUrl = 'http://media.mw.metropolia.fi/wbma/uploads/';
-
-const ListItem = (props) => {
+const ListItem = ({singleMedia, navigation}) => {
   return (
-    <TouchableOpacity style={styles.row}>
+    <TouchableOpacity
+      style={styles.row}
+      onPress={() => {
+        navigation.navigate('Single', {file: singleMedia});
+      }}
+    >
       <View style={styles.imageBox}>
         <Image
           style={styles.image}
-          source={{uri: uploadsUrl + props.singleMedia.thumbnails.w160}}
+          source={{uri: uploadsUrl + singleMedia.thumbnails.w160}}
         />
       </View>
       <View style={styles.textBox}>
-        <Text style={styles.listTitle}>{props.singleMedia.title}</Text>
-        <Text>{props.singleMedia.description}</Text>
+        <Text style={styles.listTitle}>{singleMedia.title}</Text>
+        <Text>{singleMedia.description}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -23,6 +27,7 @@ const ListItem = (props) => {
 
 ListItem.propTypes = {
   singleMedia: PropTypes.object,
+  navigation: PropTypes.object,
 };
 
 const styles = StyleSheet.create({

@@ -1,17 +1,8 @@
-import {StatusBar} from 'expo-status-bar';
 import React from 'react';
-import {SafeAreaView} from 'react-native';
-import List from './components/List';
-import GlobalStyles from './utils/GlobalStyles';
+import Navigator from './navigators/Navigators';
 
 const App = () => {
-  return (
-    // SafeAreaView: only for IOS, but there's a hack for Android
-    <SafeAreaView style={GlobalStyles.container}>
-      <List />
-      <StatusBar style="auto" />
-    </SafeAreaView>
-  );
+  return <Navigator />;
 };
 
 export default App;
