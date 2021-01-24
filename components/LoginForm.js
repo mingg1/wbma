@@ -10,13 +10,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const LoginForm = ({navigation}) => {
   const {inputs, handleInputChange} = useLogInForm();
   const {postLogin} = useLogin();
-  const {setIsLoggedIn} = useContext(MainContext);
+  const {setIsLoggedIn, setUser} = useContext(MainContext);
 
   const doLogin = async () => {
     try {
       const userData = await postLogin(inputs);
-      setIsLoggedIn(true);
       await AsyncStorage.setItem('userToken', userData.token);
+      setIsLoggedIn(true);
+      setUser(userData.user);
     } catch (err) {
       console.error('postLogin error', err);
     }

@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   View,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
@@ -13,8 +14,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useLogin} from '../hooks/ApiHooks';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 const Login = ({navigation}) => {
   const {isLoggedIn, setIsLoggedIn, setUser} = useContext(MainContext);
@@ -40,23 +39,19 @@ const Login = ({navigation}) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboard}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.login}>
-            <Text>Login</Text>
-            <LoginForm navigation={navigation} />
-          </View>
-          <View style={styles.register}>
-            <Text>Register</Text>
-            <RegisterForm navigation={navigation} />
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.login}>
+          <Text>Login</Text>
+          <LoginForm navigation={navigation} />
+          <Text>Register</Text>
+          <RegisterForm navigation={navigation} />
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 

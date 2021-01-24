@@ -8,6 +8,7 @@ const Profile = ({navigation}) => {
   const {isLoggedIn, setIsLoggedIn, user} = useContext(MainContext);
   console.log('Profile isLoggedIn?', isLoggedIn);
   console.log('profile user data', user);
+
   const logout = async () => {
     setIsLoggedIn(false);
     await AsyncStorage.clear();
