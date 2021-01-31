@@ -3,7 +3,7 @@ import {View, Button, Alert} from 'react-native';
 import PropTypes from 'prop-types';
 import FormTextInput from './FormTextInput';
 import useSignUpForm from '../hooks/RegisterHooks';
-import {useLogin, useRegister} from '../hooks/ApiHooks';
+import {useLogin, useUser} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useContext} from 'react/cjs/react.development';
 import {MainContext} from '../contexts/MainContext';
@@ -11,7 +11,7 @@ import {MainContext} from '../contexts/MainContext';
 const RegisterForm = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {inputs, handleInputChange} = useSignUpForm();
-  const {postRegister} = useRegister();
+  const {postRegister} = useUser();
   const {postLogin} = useLogin();
 
   const doRegister = async () => {

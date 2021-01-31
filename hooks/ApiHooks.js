@@ -1,6 +1,15 @@
 import {useEffect, useState} from 'react';
 import {baseUrl} from '../utils/variables';
 
+// general function for fetching (fetchOptions default value is empty object)
+const doFetch = async (url, options = {}) => {
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    throw new Error('doFetch failed :p');
+  }
+  return await response.json();
+};
+
 const useLoadMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
 
@@ -37,39 +46,16 @@ const useLogin = () => {
       body: JSON.stringify(userCrentials),
     };
     try {
-      const response = await fetch(baseUrl + 'login', options);
-      const userData = await response.json();
-      if (response.ok) {
-        return userData;
-      } else {
-        throw new Error(userData.message);
-      }
+      const userData = await doFetch(baseUrl + 'login', options);
+      return userData;
     } catch (err) {
       throw new Error(err.message);
     }
   };
-
-  const checkToken = async (token) => {
-    try {
-      const options = {
-        method: 'GET',
-        headers: {'x-access-token': token},
-      };
-      const response = await fetch(baseUrl + 'users/user', options);
-      const userData = await response.json();
-      if (response.ok) {
-        return userData;
-      } else {
-        throw new Error(userData.message);
-      }
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-  return {postLogin, checkToken};
+  return {postLogin};
 };
 
-const useRegister = () => {
+const useUser = () => {
   const postRegister = async (inputs) => {
     const fetchOptions = {
       method: 'POST',
@@ -91,6 +77,24 @@ const useRegister = () => {
       return new Error(e.message);
     }
   };
-  return {postRegister};
+  const checkToken = async (token) => {
+    try {
+      const options = {
+        method: 'GET',
+        headers: {'x-access-token': token},
+      };
+      const response = await fetch(baseUrl + 'users/user', options);
+      const userData = await response.json();
+      if (response.ok) {
+        return userData;
+      } else {
+        throw new Error(userData.message);
+      }
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+
+  return {postRegister, checkToken};
 };
-export {useLoadMedia, useLogin, useRegister};
+export {useLoadMedia, useLogin, useUser};
