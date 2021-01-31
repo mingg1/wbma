@@ -22,7 +22,7 @@ const Profile = ({navigation}) => {
   useEffect(() => {
     const fetchAvatar = async () => {
       try {
-        const avatarList = await getFilesByTag(user.user_id);
+        const avatarList = await getFilesByTag('avatar_' + user.user_id);
         if (avatarList.length > 0) {
           setAvatar(uploadsUrl + avatarList.pop().filename);
         }
