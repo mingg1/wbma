@@ -1,13 +1,17 @@
 import {useEffect, useState} from 'react';
 import {baseUrl} from '../utils/variables';
 
-// general function for fetching (fetchOptions default value is empty object)
+// general function for fetching (fetchOptions default value is an empty object)
 const doFetch = async (url, options = {}) => {
   const response = await fetch(url, options);
-  if (!response.ok) {
+  const json = await response.json();
+  if (json.error) {
+    throw new Error(json.message + ': ' + json.error);
+  } else if (!response.ok) {
     throw new Error('doFetch failed :p');
+  } else {
+    return json;
   }
-  return await response.json();
 };
 
 const useLoadMedia = () => {
@@ -15,12 +19,10 @@ const useLoadMedia = () => {
 
   const loadMedia = async (limit = 3) => {
     try {
-      const listResponse = await fetch(baseUrl + 'media?limit=' + limit);
-      const listJson = await listResponse.json();
+      const listJson = await doFetch(baseUrl + 'media?limit=' + limit);
       const media = await Promise.all(
         listJson.map(async (item) => {
-          const fileResponse = await fetch(baseUrl + 'media/' + item.file_id);
-          const fileJson = fileResponse.json();
+          const fileJson = await doFetch(baseUrl + 'media/' + item.file_id);
           // console.log('results', fileJson);
           return fileJson;
         })
@@ -65,13 +67,8 @@ const useUser = () => {
       body: JSON.stringify(inputs),
     };
     try {
-      const response = await fetch(baseUrl + 'users', fetchOptions);
-      const json = await response.json();
-      if (response.ok) {
-        return json;
-      } else {
-        throw new Error(json.message + ': ' + json.error);
-      }
+      const json = await doFetch(baseUrl + 'users', fetchOptions);
+      return json;
     } catch (e) {
       console.log('ApiHooks register', e.message);
       return new Error(e.message);
@@ -83,13 +80,8 @@ const useUser = () => {
         method: 'GET',
         headers: {'x-access-token': token},
       };
-      const response = await fetch(baseUrl + 'users/user', options);
-      const userData = await response.json();
-      if (response.ok) {
-        return userData;
-      } else {
-        throw new Error(userData.message);
-      }
+      const userData = await doFetch(baseUrl + 'users/user', options);
+      return userData;
     } catch (err) {
       throw new Error(err.message);
     }
@@ -97,4 +89,16 @@ const useUser = () => {
 
   return {postRegister, checkToken};
 };
-export {useLoadMedia, useLogin, useUser};
+
+const useTag = () => {
+  const getFilesByTag = async (tag) => {
+    try {
+      const tagList = await doFetch(baseUrl + 'tags/' + tag);
+      return tagList;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  };
+  return {getFilesByTag};
+};
+export {useLoadMedia, useLogin, useUser, useTag};

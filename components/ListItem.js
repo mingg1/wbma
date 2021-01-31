@@ -1,60 +1,63 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
+import {
+  Avatar,
+  Button,
+  Card,
+  ListItem as RNEListItem,
+  Text,
+} from 'react-native-elements';
 
 const ListItem = ({singleMedia, navigation}) => {
   return (
-    <TouchableOpacity
-      style={styles.row}
-      onPress={() => {
-        navigation.navigate('Single', {file: singleMedia});
-      }}
-    >
-      <View style={styles.imageBox}>
-        <Image
-          style={styles.image}
-          source={{uri: uploadsUrl + singleMedia.thumbnails.w160}}
-        />
-      </View>
-      <View style={styles.textBox}>
-        <Text style={styles.listTitle}>{singleMedia.title}</Text>
-        <Text>{singleMedia.description}</Text>
-      </View>
-    </TouchableOpacity>
+    // <RNEListItem
+    //   bottomDivider
+    //   onPress={() => {
+    //     navigation.navigate('Single', {file: singleMedia});
+    //   }}
+    // >
+    //   <Avatar
+    //     size="medium"
+    //     square
+    //     source={{uri: uploadsUrl + singleMedia.thumbnails.w160}}
+    //   ></Avatar>
+    //   <RNEListItem.Content>
+    //     <RNEListItem.Title h4>{singleMedia.title}</RNEListItem.Title>
+    //     <RNEListItem.Subtitle>{singleMedia.description}</RNEListItem.Subtitle>
+    //   </RNEListItem.Content>
+    //   <RNEListItem.Chevron />
+    // </RNEListItem>
+    <Card>
+      <Card.Title>{singleMedia.title}</Card.Title>
+      <Card.Divider />
+      <Card.Image
+        source={{uri: uploadsUrl + singleMedia.thumbnails.w320}}
+        onPress={() => {
+          navigation.navigate('Single', {file: singleMedia});
+        }}
+        style={styles.image}
+      />
+      <Text style={styles.description}>{singleMedia.description}</Text>
+    </Card>
   );
 };
+
+const styles = StyleSheet.create({
+  description: {
+    marginVertical: 10,
+  },
+  image: {
+    width: '100%',
+    height: undefined,
+    aspectRatio: 1,
+  },
+});
 
 ListItem.propTypes = {
   singleMedia: PropTypes.object,
   navigation: PropTypes.object,
 };
-
-const styles = StyleSheet.create({
-  image: {
-    flex: 1,
-    height: 100,
-    borderRadius: 16,
-  },
-  imageBox: {
-    flex: 1,
-  },
-  listTitle: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    paddingBottom: 15,
-  },
-  row: {
-    flexDirection: 'row',
-    padding: 15,
-    marginBottom: 5,
-    backgroundColor: '#eee',
-    borderRadius: 16,
-  },
-  textBox: {
-    flex: 2,
-    padding: 10,
-  },
-});
 
 export default ListItem;

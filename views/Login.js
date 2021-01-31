@@ -1,19 +1,12 @@
 import React, {useContext, useEffect} from 'react';
-import {
-  StyleSheet,
-  Text,
-  Platform,
-  KeyboardAvoidingView,
-  Keyboard,
-  View,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {StyleSheet, Platform, KeyboardAvoidingView, View} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useUser} from '../hooks/ApiHooks';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
+import {Card, Text} from 'react-native-elements';
 
 const Login = ({navigation}) => {
   const {isLoggedIn, setIsLoggedIn, setUser} = useContext(MainContext);
@@ -43,14 +36,21 @@ const Login = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.login}>
-          <Text>Login</Text>
+      <View style={styles.appTitle}>
+        <Text h1>RN exercise :D</Text>
+      </View>
+      <View style={styles.form}>
+        <Card>
+          <Card.Title h4>Login</Card.Title>
+          <Card.Divider />
           <LoginForm navigation={navigation} />
-          <Text>Register</Text>
+        </Card>
+        <Card>
+          <Card.Title h4>Register</Card.Title>
+          <Card.Divider />
           <RegisterForm navigation={navigation} />
-        </View>
-      </TouchableWithoutFeedback>
+        </Card>
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -58,9 +58,15 @@ const Login = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    padding: 16,
+  },
+  appTitle: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  form: {
+    flex: 4,
   },
 });
 
