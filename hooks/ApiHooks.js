@@ -87,7 +87,16 @@ const useUser = () => {
     }
   };
 
-  return {postRegister, checkToken};
+  const checkUserId = async (username) => {
+    try {
+      const result = await doFetch(baseUrl + 'users/username/' + username);
+      return result.available;
+    } catch (err) {
+      throw new Error('Error from checkUserId', err.message);
+    }
+  };
+
+  return {postRegister, checkToken, checkUserId};
 };
 
 const useTag = () => {

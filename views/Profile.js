@@ -7,6 +7,7 @@ import {Button} from 'react-native';
 import {StyleSheet, ActivityIndicator} from 'react-native';
 import {useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const Profile = ({navigation}) => {
   const {isLoggedIn, setIsLoggedIn, user} = useContext(MainContext);
@@ -22,7 +23,7 @@ const Profile = ({navigation}) => {
   useEffect(() => {
     const fetchAvatar = async () => {
       try {
-        const avatarList = await getFilesByTag(user.user_id);
+        const avatarList = await getFilesByTag('avatar_' + user.user_id);
         if (avatarList.length > 0) {
           setAvatar(uploadsUrl + avatarList.pop().filename);
         }
@@ -33,25 +34,27 @@ const Profile = ({navigation}) => {
     fetchAvatar();
   }, []);
   return (
-    <Card>
-      <Card.Title>
-        <Text h1>{user.username}</Text>
-      </Card.Title>
-      <Card.Image
-        source={{uri: avatar}}
-        style={styles.image}
-        PlaceholderContent={<ActivityIndicator />}
-      />
-      <ListItem>
-        <Avatar icon={{name: 'email', color: 'black'}} />
-        <Text>{user.email}</Text>
-      </ListItem>
-      <ListItem>
-        <Avatar icon={{name: 'user', type: 'font-awesome', color: 'black'}} />
-        <Text>{user.full_name}</Text>
-      </ListItem>
-      <Button title={'Logout'} onPress={logout} />
-    </Card>
+    <ScrollView>
+      <Card>
+        <Card.Title>
+          <Text h1>{user.username}</Text>
+        </Card.Title>
+        <Card.Image
+          source={{uri: avatar}}
+          style={styles.image}
+          PlaceholderContent={<ActivityIndicator />}
+        />
+        <ListItem>
+          <Avatar icon={{name: 'email', color: 'black'}} />
+          <Text>{user.email}</Text>
+        </ListItem>
+        <ListItem>
+          <Avatar icon={{name: 'user', type: 'font-awesome', color: 'black'}} />
+          <Text>{user.full_name}</Text>
+        </ListItem>
+        <Button title={'Logout'} onPress={logout} />
+      </Card>
+    </ScrollView>
   );
 };
 
