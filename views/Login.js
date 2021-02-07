@@ -6,6 +6,7 @@ import {
   View,
   Keyboard,
   ScrollView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
@@ -14,7 +15,6 @@ import {useUser} from '../hooks/ApiHooks';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
 import {Card, Text, ListItem} from 'react-native-elements';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 const Login = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
