@@ -3,7 +3,6 @@ import {MainContext} from '../contexts/MainContext';
 import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Avatar, Card, ListItem, Text} from 'react-native-elements';
-import {Button} from 'react-native';
 import {StyleSheet, ActivityIndicator} from 'react-native';
 import {useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
@@ -20,6 +19,7 @@ const Profile = ({navigation}) => {
       navigation.navigate('Login');
     }
   };
+
   useEffect(() => {
     const fetchAvatar = async () => {
       try {
@@ -33,6 +33,7 @@ const Profile = ({navigation}) => {
     };
     fetchAvatar();
   }, []);
+
   return (
     <ScrollView>
       <Card>
@@ -52,7 +53,13 @@ const Profile = ({navigation}) => {
           <Avatar icon={{name: 'user', type: 'font-awesome', color: 'black'}} />
           <Text>{user.full_name}</Text>
         </ListItem>
-        <Button title={'Logout'} onPress={logout} />
+        <ListItem bottomDivider onPress={logout}>
+          <Avatar icon={{name: 'logout', color: 'black'}} />
+          <ListItem.Content>
+            <ListItem.Title>Logout</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
       </Card>
     </ScrollView>
   );

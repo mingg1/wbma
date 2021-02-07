@@ -6,7 +6,6 @@ import FormTextInput from './FormTextInput';
 import useSignUpForm from '../hooks/RegisterHooks';
 import {useLogin, useUser} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import {MainContext} from '../contexts/MainContext';
 
 const RegisterForm = ({navigation}) => {
@@ -66,7 +65,7 @@ const RegisterForm = ({navigation}) => {
       />
       <FormTextInput
         autoCapitalize="none"
-        placeholder="password"
+        placeholder="confirm password"
         onChangeText={(txt) => handleInputChange('confirmPassword', txt)}
         secureTextEntry={true}
         onEndEditing={(evt) => {

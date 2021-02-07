@@ -4,8 +4,8 @@ import {
   Platform,
   KeyboardAvoidingView,
   View,
+  Keyboard,
   ScrollView,
-  Button as RNButton,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
@@ -13,12 +13,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useUser} from '../hooks/ApiHooks';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
-import {Card, Text} from 'react-native-elements';
+import {Card, Text, ListItem} from 'react-native-elements';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 const Login = ({navigation}) => {
-  const {isLoggedIn, setIsLoggedIn, setUser} = useContext(MainContext);
+  const {setIsLoggedIn, setUser} = useContext(MainContext);
   const [formToggle, setFormToggle] = useState(false);
-  console.log('isLoggedIn?', isLoggedIn);
   const {checkToken} = useUser();
 
   const getToken = async () => {
@@ -44,34 +44,44 @@ const Login = ({navigation}) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}
+        enabled
       >
-        <View style={styles.appTitle}>
-          <Text h1>RN exercise :D</Text>
-        </View>
-        <View style={styles.form}>
-          <Text style={styles.text}>
-            {formToggle ? 'No account?' : 'Already have your account?'}
-          </Text>
-          <RNButton
-            title={formToggle ? 'Register here' : 'Log in'}
-            onPress={() => {
-              setFormToggle(!formToggle);
-            }}
-          />
-          {formToggle ? (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.appTitle}>
+            <Text h1>RN exercise :D</Text>
+          </View>
+          <View style={styles.form}>
             <Card>
-              <Card.Title h4>Login</Card.Title>
-              <Card.Divider />
-              <LoginForm navigation={navigation} />
+              {formToggle ? (
+                <>
+                  <Card.Title h4>Login</Card.Title>
+                  <Card.Divider />
+                  <LoginForm navigation={navigation} />
+                </>
+              ) : (
+                <>
+                  <Card.Title h4>Register</Card.Title>
+                  <Card.Divider />
+                  <RegisterForm navigation={navigation} />
+                </>
+              )}
+              <ListItem
+                onPress={() => {
+                  setFormToggle(!formToggle);
+                }}
+              >
+                <ListItem.Content>
+                  <Text style={styles.text}>
+                    {formToggle
+                      ? 'No account? Register here.'
+                      : 'Already registered? Login here.'}
+                  </Text>
+                </ListItem.Content>
+                <ListItem.Chevron />
+              </ListItem>
             </Card>
-          ) : (
-            <Card>
-              <Card.Title h4>Register</Card.Title>
-              <Card.Divider />
-              <RegisterForm navigation={navigation} />
-            </Card>
-          )}
-        </View>
+          </View>
+        </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </ScrollView>
   );

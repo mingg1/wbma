@@ -1,4 +1,6 @@
-import {useEffect, useState} from 'react';
+import axios from 'axios';
+import {useContext, useEffect, useState} from 'react';
+import {MainContext} from '../contexts/MainContext';
 import {baseUrl} from '../utils/variables';
 
 // general function for fetching (fetchOptions default value is an empty object)
@@ -16,6 +18,7 @@ const doFetch = async (url, options = {}) => {
 
 const useLoadMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
+  const {update} = useContext(MainContext);
 
   const loadMedia = async (limit = 3) => {
     try {
@@ -23,7 +26,6 @@ const useLoadMedia = () => {
       const media = await Promise.all(
         listJson.map(async (item) => {
           const fileJson = await doFetch(baseUrl + 'media/' + item.file_id);
-          // console.log('results', fileJson);
           return fileJson;
         })
       );
@@ -35,7 +37,7 @@ const useLoadMedia = () => {
 
   useEffect(() => {
     loadMedia(5);
-  }, []);
+  }, [update]);
 
   return mediaArray;
 };
@@ -110,4 +112,22 @@ const useTag = () => {
   };
   return {getFilesByTag};
 };
-export {useLoadMedia, useLogin, useUser, useTag};
+
+const useMedia = () => {
+  const upload = async (fd, token) => {
+    const options = {
+      method: 'POST',
+      headers: {'x-access-token': token},
+      data: fd,
+      url: baseUrl + 'media',
+    };
+    try {
+      const response = await axios(options);
+      return response.data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  };
+  return {upload};
+};
+export {useLoadMedia, useLogin, useUser, useTag, useMedia};

@@ -23,7 +23,6 @@ const constraints = {
   },
   confirmPassword: {
     equality: 'password',
-    message: '',
   },
   email: {
     presence: {
