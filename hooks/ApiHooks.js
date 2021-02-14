@@ -31,9 +31,7 @@ const useLoadMedia = (myFilesOnly, userId) => {
         })
       );
       if (myFilesOnly) {
-        media = media.filter((item) => {
-          item.user_id === userId;
-        });
+        media = media.filter((item) => item.user_id === userId);
       }
       setMediaArray(media);
     } catch (error) {
