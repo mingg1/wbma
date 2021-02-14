@@ -15,10 +15,10 @@ const constraints = {
     presence: {
       message: 'cannot be empty',
     },
-  },
-  length: {
-    minimum: 5,
-    message: 'min length is 5 characters',
+    length: {
+      minimum: 5,
+      message: 'min length is 5 characters',
+    },
   },
 };
 
@@ -30,34 +30,33 @@ const useUploadForm = (callback) => {
   const [uploadErrors, setUploadErrors] = useState({});
 
   const handleInputChange = (name, text) => {
-
     setInputs((inputs) => {
       return {
         ...inputs,
         [name]: text,
       };
     });
+
+    const error = validator(name, text, constraints);
+    setUploadErrors((uploadErrors) => {
+      return {
+        ...uploadErrors,
+        [name]: error,
+      };
+    });
   };
-  const error = validator(name, text, constraints)
-  setUploadErrors((uploadErrors) => {
-    return {
-      ...uploadErrors,
-      [name]: error,
-    };
-  });
-};
-const reset = ()=>{
-  setInputs({
-    title:'',
-    description:''
-  })
-  setUploadErrors({})
-}
+  const reset = () => {
+    setInputs({
+      title: '',
+      description: '',
+    });
+    setUploadErrors({});
+  };
   return {
     handleInputChange,
     inputs,
     uploadErrors,
-    reset
+    reset,
   };
 };
 

@@ -46,10 +46,10 @@ const Login = ({navigation}) => {
         style={styles.container}
         enabled
       >
+        <View style={styles.appTitle}>
+          <Text h1>RN exercise :D</Text>
+        </View>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.appTitle}>
-            <Text h1>RN exercise :D</Text>
-          </View>
           <View style={styles.form}>
             <Card>
               {formToggle ? (
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     flex: 1,
     alignItems: 'center',
+    alignSelf: 'center',
     justifyContent: 'center',
   },
   form: {
