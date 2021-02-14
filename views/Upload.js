@@ -15,6 +15,7 @@ import {useMedia, useTag} from '../hooks/ApiHooks';
 import useUploadForm from '../hooks/UploadHooks';
 import {MainContext} from '../contexts/MainContext';
 import {appIdentifier} from '../utils/variables';
+import {Video} from 'expo-av';
 
 const Upload = ({navigation}) => {
   const [image, setImage] = useState(null);
@@ -117,7 +118,19 @@ const Upload = ({navigation}) => {
       <KeyboardAvoidingView behavior="position" enabled>
         <Card>
           <Text h4>Upload media file</Text>
-          {image && <Image source={{uri: image}} style={styles.img} />}
+          {image && (
+            <>
+              {filetype === 'image' ? (
+                <Image source={{uri: image}} style={styles.image} />
+              ) : (
+                <Video
+                  source={{uri: image}}
+                  style={styles.video}
+                  useNativeControls={true}
+                />
+              )}
+            </>
+          )}
           <Input
             placeholder="title"
             value={inputs.title}
@@ -158,6 +171,11 @@ Upload.propTypes = {
 
 const styles = StyleSheet.create({
   img: {
+    width: '100%',
+    height: undefined,
+    aspectRatio: 1,
+  },
+  video: {
     width: '100%',
     height: undefined,
     aspectRatio: 1,

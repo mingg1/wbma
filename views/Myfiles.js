@@ -4,18 +4,17 @@ import List from '../components/List';
 import GlobalStyles from '../utils/GlobalStyles';
 import PropTypes from 'prop-types';
 
-const Home = ({navigation}) => {
+const Myfiles = ({navigation}) => {
   return (
-    // SafeAreaView: only for IOS, but there's a hack for Android
     <SafeAreaView style={GlobalStyles.droidSafeArea}>
-      <List navigation={navigation} myFilesOnly={false} />
+      <List navigation={navigation} />
       <StatusBar style="auto" />
     </SafeAreaView>
   );
 };
 
-Home.propTypes = {
+Myfiles.propTypes = {
   navigation: PropTypes.object,
 };
 
-export default Home;
+export default Myfiles;
